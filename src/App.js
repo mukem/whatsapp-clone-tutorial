@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import Sidebar from "./Sidebar";
 import Chat from "./Chat";
@@ -19,8 +19,8 @@ function App() {
           
         <div className="app_body">
         <Router>
+        <Sidebar />
           <Switch>
-          <Sidebar />
             <Route path="/rooms/:roomId">
               
               <Chat />

@@ -7,12 +7,16 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import "./Chat.css";
 import db from './firebase';
+import firebase from "firebase/compat/app";
+import { useStateValue } from "./StateProvider";
 
 function Chat() {
     const [input, setInput] = useState("");
     const [seed, setSeed] = useState("");
     const { roomId } = useParams();
     const [roomName, setRoomName] = useState("");
+    const [messages, setMessages] = useState([]);
+    const [{ user }, dispatch] = useStateValue();
 
     useEffect(() => {
         if (roomId) {
@@ -21,7 +25,7 @@ function Chat() {
             ));
 
             db.collection('rooms')
-                .doc(roomid)
+                .doc(roomId)
                 .collection("messages")
                 .orderBy('timestamp', 'asc')
                 .onSnapshot((snapshot) =>
@@ -39,7 +43,12 @@ function Chat() {
     const sendMessage = (e) => {
         e.preventDefault();
         console.log("you type>>>", input);
-        
+
+        db.collection('rooms').doc(roomId).collection('messages').add({
+            message: input,
+            name: user.displayName,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
         setInput("");
     };
     return (
@@ -62,20 +71,24 @@ function Chat() {
                     </IconButton>
                 </div>
             </div>
+
             <div className="chat_body">
-                {message.map((message) => (
-                    <p className={`chat_message ${true && "chat_reciever"}`}>
+                {messages.map((message) => (
+                    <p className={`chat_message ${message.name == user.displayName &&
+                        "chat_reciever"}`}>
+
                         <span className="chat_name">
                             {message.name}</span>
                         {message.message}
+
                         <span className="chat_timestamp">3:56pm
                         {new Date(message.timestamp?.toDate()).toUTCString()}
                         </span>
-
                     </p>
                 ))}
-               
             </div>
+
+
             <div className='chat_footer'>
                 <InsertEmoticonIcon />
                 <form>

@@ -25,7 +25,7 @@ function Login() {
                 <img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/langfr-330px-WhatsApp.svg.png" />
 
                 <div className="login__text">
-                    <h1>Sign in to WhatsApp</h1>
+                    <h1>Sign in to collins WhatsApp</h1>
                 </div>
 
                 <Button type="submit" onClick={signIn}>

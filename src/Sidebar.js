@@ -7,6 +7,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { SearchOutlined } from "@mui/icons-material";
 import "./SidebarChat.css";
 import SidebarChat from "./SidebarChat";
+import { useStateValue } from './StateProvider';
 import db from "./firebase";
 
 function Sidebar() {
